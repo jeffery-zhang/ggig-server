@@ -1,10 +1,7 @@
 import { get, RequestOptions } from 'https'
 import dotenv from 'dotenv'
 
-export interface GithubResError {
-  statusCode: number
-  message: string
-}
+import { HttpException } from './httpException'
 
 dotenv.config({ path: '.env' })
 
@@ -29,10 +26,8 @@ export const getTemplate = async (type?: string): Promise<string> => new Promise
       res.on('end', () => {
         if (res.statusCode !== 200) {
           console.error(`Github Api response error:\nmes=${data}\nstatus=${res.statusCode}`)
-          reject({
-            statusCode: res.statusCode,
-            message: 'Github Api response error',
-          } as GithubResError)
+          const err = new HttpException(res.statusCode || 500, data)
+          reject(err)
         }
         resolve(data)
       })
@@ -40,5 +35,6 @@ export const getTemplate = async (type?: string): Promise<string> => new Promise
   )
   req.on('error', err => {
     console.error('Github Api request error: ', err)
+    throw new HttpException(500, 'Github Api request error')
   })
 })

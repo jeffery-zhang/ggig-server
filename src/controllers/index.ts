@@ -1,4 +1,4 @@
-import { allTemplates, getTemplate } from './template'
+import { allTemplates, getTemplate } from './gitignore'
 
 export {
   allTemplates,

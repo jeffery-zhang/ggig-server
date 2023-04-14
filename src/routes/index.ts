@@ -5,8 +5,8 @@ const router = new Router()
 
 router.prefix('/api')
 
-router.get('/templates', controllers.allTemplates)
+router.get('/gitignore/templates', controllers.allTemplates)
 
-router.get('/templates/:type', controllers.getTemplate)
+router.get('/gitignore/templates/:type', controllers.getTemplate)
 
 export default router

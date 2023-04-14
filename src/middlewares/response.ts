@@ -1,6 +1,6 @@
 import type { Context } from 'koa'
 
-interface ResponseData {
+export interface ResponseData {
   success: boolean
   message?: string
   data?: any
@@ -11,24 +11,11 @@ export default async function response(ctx: Context, next: () => Promise<any>) {
   await next()
   
   const body: any = ctx.body
+  const data: ResponseData = { success: false, code: ctx.status }
 
-  const data: ResponseData = { success: true, code: ctx.status }
-
-  if (body instanceof Error) {
-    data.success = false
-    data.message = body.message
-  } else if (ctx.status === 404) {
-    data.success = false
-    data.message = 'Not Found'
-  } else if (ctx.status === 401) {
-    data.success = false
-    data.message = 'Unauthorized'
-  } else if (ctx.status === 500) {
-    data.success = false
-    data.message = 'Internal Server Error'
-  } else {
+  if (ctx.status === 200) {
+    data.success = true
     data.data = body
+    ctx.body = data
   }
-  
-  ctx.body = data
 }

@@ -9,4 +9,6 @@ app.use(middlewares.response)
 
 app.use(router.routes())
 
+app.on('error', middlewares.errorhandler)
+
 export default app
