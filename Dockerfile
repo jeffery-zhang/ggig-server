@@ -13,7 +13,7 @@ RUN npm run build
 RUN npm prune --production
 
 # production
-FROM base AS production
+FROM dependencies AS production
 WORKDIR /apps/ggig-server
 COPY --from=build /apps/ggig-server/dist ./dist
 COPY --from=build /apps/ggig-server/node_modules ./node_modules
